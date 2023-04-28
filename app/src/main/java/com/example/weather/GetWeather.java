@@ -19,7 +19,6 @@ public class GetWeather {
     public void setApiKey(String apiKey) {
         this.apiKey = apiKey;
     }
-
     public String getWeatherData(String location) {
         HttpURLConnection con = null;
         InputStream is = null;
@@ -50,7 +49,6 @@ public class GetWeather {
         }
         return null;
     }
-
     public byte[] getImage(String code) {
         HttpURLConnection con = null;
         InputStream is = null;
