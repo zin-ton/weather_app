@@ -11,6 +11,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -35,7 +36,19 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     @Override
     public void onLocationChanged(Location location){
         TextView txt = (TextView) findViewById(R.id.textView);
-        txt.setText(Double.toString(location.getLatitude()) + " " + Double.toString(location.getLongitude()));
+        GetWeather getWeather = new GetWeather("20c29eec2e1c9d4891b32fac6a783bde");
+        getWeather.setCoords(location.getLatitude(), location.getLongitude());
+        Thread thread = new Thread(new Runnable(){
+            @Override
+            public void run() {
+                try {
+                    txt.setText(getWeather.getWeatherData());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        thread.start();
     }
     @Override
     public void onProviderDisabled(String provider) {
