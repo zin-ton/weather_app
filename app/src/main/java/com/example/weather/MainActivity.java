@@ -15,6 +15,10 @@ import android.os.StrictMode;
 import android.util.Log;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
+import java.lang.reflect.Type;
+
 public class MainActivity extends AppCompatActivity implements LocationListener {
     private static final int REQUEST_LOCATION_PERMISSION = 1;
     private LocationManager locationManager;
@@ -36,13 +40,19 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     @Override
     public void onLocationChanged(Location location){
         TextView txt = (TextView) findViewById(R.id.textView);
-        GetWeather getWeather = new GetWeather("20c29eec2e1c9d4891b32fac6a783bde");
+        GetWeather getWeather = new GetWeather();//TODO: Add Api Key
         getWeather.setCoords(location.getLatitude(), location.getLongitude());
         Thread thread = new Thread(new Runnable(){
             @Override
             public void run() {
                 try {
-                    txt.setText(getWeather.getWeatherData());
+                    String json;
+                    json = getWeather.getWeatherData();
+                    JsonWeather  weather = new JsonWeather();
+                    if(json != null){
+                        weather = weather.fromJson(json);
+                        txt.setText("Feels like = " +Double.toString(weather.main.feels_like) + "\n" + "visibility = " + Integer.toString(weather.visibility) + "m");
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

@@ -1,11 +1,17 @@
 package com.example.weather;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
+import java.util.HashMap;
+import java.util.Map;
 
 public class GetWeather {
     private static final String BASE_URL = "https://api.openweathermap.org/data/2.5/weather?lat=";
@@ -26,22 +32,23 @@ public class GetWeather {
     public String getWeatherData() {
         URL url;
         try {
-            url = new URL(BASE_URL + latitude + "&lon=" + longitude + "&appid=" + apiKey);
+            url = new URL(BASE_URL + latitude + "&lon=" + longitude + "&appid=" + apiKey + "&units=metric");
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
-        try (InputStream input = url.openStream()) {
-            InputStreamReader isr = new InputStreamReader(input);
-            BufferedReader reader = new BufferedReader(isr);
-            StringBuilder json = new StringBuilder();
-            int c;
-            while ((c = reader.read()) != -1) ;
-            {
-                json.append((char) c);
+        try{
+            StringBuilder result = new StringBuilder();
+            URLConnection conn = url.openConnection();
+            BufferedReader rd = new BufferedReader(new InputStreamReader (conn.getInputStream()));
+            String line;
+            while ((line = rd.readLine()) != null){
+                result.append(line);
             }
-            return json.toString();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+            rd.close();
+            return result.toString();
+        }catch (IOException e){
+            System.out.println(e.getMessage());
         }
+        return null;
     }
 }
