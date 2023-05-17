@@ -73,5 +73,5 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         Log.d("Latitude","status");
     }
 }
-//TODO: 1) write settings to choose what i want to see
-//TODO: 2) encrypt API key
+//TODO: 2) write settings to choose what i want to see
+//TODO: 3) encrypt API key
