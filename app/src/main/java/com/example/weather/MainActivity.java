@@ -27,7 +27,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        TextView txtLat = (TextView) findViewById(R.id.textView);
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION_PERMISSION);
         }
@@ -39,8 +38,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     }
     @Override
     public void onLocationChanged(Location location){
-        TextView txt = (TextView) findViewById(R.id.textView);
-        GetWeather getWeather = new GetWeather();//TODO: Add Api Key
+        GetWeather getWeather = new GetWeather("");//TODO: Add Api Key
         getWeather.setCoords(location.getLatitude(), location.getLongitude());
         Thread thread = new Thread(new Runnable(){
             @Override
@@ -51,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                     JsonWeather  weather = new JsonWeather();
                     if(json != null){
                         weather = weather.fromJson(json);
-                        txt.setText("Feels like = " +Double.toString(weather.main.feels_like) + "\n" + "visibility = " + Integer.toString(weather.visibility) + "m");
+                        //txt.setText("Feels like = " +Double.toString(weather.main.feels_like) + "\n" + "visibility = " + Integer.toString(weather.visibility) + "m");
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -75,3 +73,5 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         Log.d("Latitude","status");
     }
 }
+//TODO: 1) write settings to choose what i want to see
+//TODO: 2) encrypt API key

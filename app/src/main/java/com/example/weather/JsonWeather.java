@@ -16,7 +16,7 @@ public class JsonWeather {
     public int id;
     public String name;
     public int cod;
-    public JsonWeather fromJson(String JsonString){
+    public static JsonWeather fromJson(String JsonString){
         JsonWeather weather = new JsonWeather();
         Gson gson = new Gson();
         weather = gson.fromJson(JsonString, JsonWeather.class);
