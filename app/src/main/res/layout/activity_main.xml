@@ -5,5 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
-    />
+    >
+
+    <Button
+        android:id="@+id/SettingsButton"
+        style="@android:style/Theme.Material.Settings"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        app:icon="@android:drawable/ic_menu_preferences"
+        app:iconPadding="0dp"
+        app:iconSize="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
 <!--TODO: 1) make interface for setting and app-->
