@@ -8,14 +8,43 @@
     >
 
     <Button
+        android:id="@+id/RefreshButton"
+        style="@android:style/Theme.Material.Settings"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="16dp"
+        app:icon="@android:drawable/ic_popup_sync"
+        app:iconPadding="0dp"
+        app:iconSize="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
         android:id="@+id/SettingsButton"
         style="@android:style/Theme.Material.Settings"
         android:layout_width="40dp"
         android:layout_height="40dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="352dp"
         app:icon="@android:drawable/ic_menu_preferences"
         app:iconPadding="0dp"
         app:iconSize="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/weatherTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginEnd="40dp"
+        android:gravity="center"
+        android:text="Weather will come soon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
-<!--TODO: 1) make interface for setting and app-->
+    <!--TODO: 1) make interface for setting and app-->
