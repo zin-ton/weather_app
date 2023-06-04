@@ -19,7 +19,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity implements LocationListener {
     private static final int REQUEST_LOCATION_PERMISSION = 1;
@@ -61,38 +60,39 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                     @Override
                     public void run() {
                         try {
-                            String json = null;
+                            String json;
                             json = getWeather.getWeatherData();
                             JsonWeather  weather = new JsonWeather();
-                            //TimeUnit.SECONDS.sleep(20);
-                                if(json != null){
-                                    weather = JsonWeather.fromJson(json);
-                                    String showWeather = "";
-                                    if (settingsStatus[0]) { // Wind info
-                                        showWeather += "Wind = " + weather.wind.speed + "\n";
-                                    }
-                                    if (settingsStatus[1]) {// Clouds info
-                                        showWeather += "Clouds = " + weather.clouds + "\n";
-                                    }
-                                    if (settingsStatus[2]) { // Visibility info
-                                        showWeather += "Visibility = " + Integer.toString(weather.visibility) + "m\n";
-                                    }
-                                    if (settingsStatus[3]) { // Sunset info
-                                        showWeather += "Sunset and sunrise info will coming soon\n";
-                                    }
-                                    if (settingsStatus[4]) { // Pressure info
-                                        showWeather += "Pressure = enough\n";
-                                    }
-                                    if (settingsStatus[5]) { // Humidity info
-                                        showWeather += "Feels like = " + Double.toString(weather.main.feels_like) + "\n";
-                                    }
-                                    if (Objects.equals(settingsStatus, new boolean[]{false, false, false, false, false, false})) {
-                                        showWeather = "Please select some settings";
-                                    }
-                                    showOnDisplay.setText(showWeather);
-                                } else {
-                                    showOnDisplay.setText("Connection error");
+                            if(json != null){
+                                weather = JsonWeather.fromJson(json);
+                                String showWeather = "";
+                                if (settingsStatus[0]) { // Wind info
+                                    showWeather += "Wind:   " +"speed = "+ weather.wind.speed + ", deg = "
+                                            + weather.wind.deg + "\n";
                                 }
+                                if (settingsStatus[1]) {// Clouds info
+                                    showWeather += "Clouds = " + weather.clouds.all + "\n";
+                                }
+                                if (settingsStatus[2]) { // Visibility info
+                                    showWeather += "Visibility = " + Integer.toString(weather.visibility) + "m\n";
+                                }
+                                if (settingsStatus[3]) { // Sunset info
+                                    showWeather += "Sunset = " + weather.sys.sunrise + "s, sunset = "
+                                            + weather.sys.sunset + "s\n";
+                                }
+                                if (settingsStatus[4]) { // Pressure info
+                                    showWeather += "Pressure = " + weather.main.pressure + "\n";
+                                }
+                                if (settingsStatus[5]) { // Humidity info
+                                    showWeather += "Feels like = " + Double.toString(weather.main.feels_like) + "\n";
+                                }
+                                if (settingsStatus == ZERO) {
+                                    showWeather = "Please select some settings";
+                                }
+                                showOnDisplay.setText(showWeather);
+                            } else {
+                                showOnDisplay.setText("Connection error");
+                            }
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -119,7 +119,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
     @Override
     public void onLocationChanged(Location location){
-        final String apiKey = "";
+        final String apiKey = "20c29eec2e1c9d4891b32fac6a783bde";
         GetWeather getWeather = new GetWeather(apiKey);//TODO: Add Api Key
         getWeather.setCoords(location.getLatitude(), location.getLongitude());
         Thread thread = new Thread(new Runnable(){
