@@ -18,6 +18,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements LocationListener {
@@ -26,23 +28,23 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     private static boolean[] settingsStatus = ZERO;
     private LocationManager locationManager;
     protected LocationListener locationListener;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION_PERMISSION);
         }
-        if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION_PERMISSION);
         }
         Intent myIntent = new Intent(MainActivity.this, SettingsActivity.class);
         Button settings = (Button) findViewById(R.id.SettingsButton);
         Button refresh = (Button) findViewById(R.id.RefreshButton);
-
-
-        refresh.setOnClickListener(new View.OnClickListener()
-        {
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        refresh.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("SetTextI18n") // хз зач, говорит, что надо
             @Override
             public void onClick(View view) {
@@ -56,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                         + "\nFeels like = " + settingsStatus[5]);
                 final String apiKey = "20c29eec2e1c9d4891b32fac6a783bde";
                 GetWeather getWeather = new GetWeather(apiKey);//TODO: Add Api Key
+                getWeather.setCoords(location.getLatitude(), location.getLongitude());
                 Thread thread = new Thread(new Runnable(){
                     @Override
                     public void run() {
@@ -65,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                             JsonWeather  weather = new JsonWeather();
                             if(json != null){
                                 weather = JsonWeather.fromJson(json);
-                                String showWeather = "";
+                                String showWeather = "timezone = " + weather.timezone + "\n";
                                 if (settingsStatus[0]) { // Wind info
                                     showWeather += "Wind:   " +"speed = "+ weather.wind.speed + ", deg = "
                                             + weather.wind.deg + "\n";
@@ -110,8 +113,9 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 startActivity(myIntent);
             }
         });
-//        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-//        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+
+        //locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+
     }
 
 
