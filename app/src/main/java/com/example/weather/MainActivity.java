@@ -1,9 +1,5 @@
 package com.example.weather;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -18,9 +14,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Objects;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 public class MainActivity extends AppCompatActivity implements LocationListener {
     private static final int REQUEST_LOCATION_PERMISSION = 1;
@@ -59,18 +55,18 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 final String apiKey = "";
                 GetWeather getWeather = new GetWeather(apiKey);//TODO: Add Api Key
                 getWeather.setCoords(location.getLatitude(), location.getLongitude());
-                Thread thread = new Thread(new Runnable(){
+                Thread thread = new Thread(new Runnable() {
                     @Override
                     public void run() {
                         try {
                             String json;
                             json = getWeather.getWeatherData();
-                            JsonWeather  weather = new JsonWeather();
-                            if(json != null){
+                            JsonWeather weather = new JsonWeather();
+                            if (json != null) {
                                 weather = JsonWeather.fromJson(json);
                                 String showWeather = "timezone = " + weather.timezone + "\n";
                                 if (settingsStatus[0]) { // Wind info
-                                    showWeather += "Wind:   " +"speed = "+ weather.wind.speed + ", deg = "
+                                    showWeather += "Wind:   " + "speed = " + weather.wind.speed + ", deg = "
                                             + weather.wind.deg + "\n";
                                 }
                                 if (settingsStatus[1]) {// Clouds info
@@ -106,8 +102,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         });
 
 
-        settings.setOnClickListener(new View.OnClickListener()
-        {
+        settings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(myIntent);
@@ -119,21 +114,19 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     }
 
 
-
-
     @Override
-    public void onLocationChanged(Location location){
+    public void onLocationChanged(Location location) {
         final String apiKey = "";
         GetWeather getWeather = new GetWeather(apiKey);//TODO: Add Api Key
         getWeather.setCoords(location.getLatitude(), location.getLongitude());
-        Thread thread = new Thread(new Runnable(){
+        Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
                     String json;
                     json = getWeather.getWeatherData();
-                    JsonWeather  weather = new JsonWeather();
-                    if(json != null){
+                    JsonWeather weather = new JsonWeather();
+                    if (json != null) {
                         weather = weather.fromJson(json);
                         //txt.setText("Feels like = " +Double.toString(weather.main.feels_like) + "\n" + "visibility = " + Integer.toString(weather.visibility) + "m");
                     }
@@ -147,17 +140,17 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
     @Override
     public void onProviderDisabled(String provider) {
-        Log.d("Latitude","disable");
+        Log.d("Latitude", "disable");
     }
 
     @Override
     public void onProviderEnabled(String provider) {
-        Log.d("Latitude","enable");
+        Log.d("Latitude", "enable");
     }
 
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
-        Log.d("Latitude","status");
+        Log.d("Latitude", "status");
     }
 }
 //TODO: 2) write settings to choose what i want to see

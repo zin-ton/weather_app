@@ -1,12 +1,12 @@
 package com.example.weather;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class SettingsActivity extends AppCompatActivity {
     @Override
@@ -17,18 +17,16 @@ public class SettingsActivity extends AppCompatActivity {
         Intent intentToMainActivity = new Intent(SettingsActivity.this, MainActivity.class);
         Button apply = (Button) findViewById(R.id.ApplyButton);
         Button exit = (Button) findViewById(R.id.ExitButton);
-        exit.setOnClickListener(new View.OnClickListener()
-        {
+        exit.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view){
+            public void onClick(View view) {
                 startActivity(intentToMainActivity);
             }
         });
-        apply.setOnClickListener(new View.OnClickListener()
-        {
+        apply.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view){
-                boolean[] setting_choise = new boolean[] {
+            public void onClick(View view) {
+                boolean[] setting_choise = new boolean[]{
                         ((CheckBox) findViewById(R.id.WindInfo)).isChecked(),
                         ((CheckBox) findViewById(R.id.CloudsInfo)).isChecked(),
                         ((CheckBox) findViewById(R.id.VisibilityInfo)).isChecked(),
