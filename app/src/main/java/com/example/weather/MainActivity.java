@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                         + "\nClouds = " + settingsStatus[1] + "\nVisibility = " + settingsStatus[2]
                         + "\nSunset/rise = " + settingsStatus[3] + "\nPressure = " + settingsStatus[4]
                         + "\nFeels like = " + settingsStatus[5]);
-                final String apiKey = "20c29eec2e1c9d4891b32fac6a783bde";
+                final String apiKey = "";
                 GetWeather getWeather = new GetWeather(apiKey);//TODO: Add Api Key
                 getWeather.setCoords(location.getLatitude(), location.getLongitude());
                 Thread thread = new Thread(new Runnable(){
@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
     @Override
     public void onLocationChanged(Location location){
-        final String apiKey = "20c29eec2e1c9d4891b32fac6a783bde";
+        final String apiKey = "";
         GetWeather getWeather = new GetWeather(apiKey);//TODO: Add Api Key
         getWeather.setCoords(location.getLatitude(), location.getLongitude());
         Thread thread = new Thread(new Runnable(){
