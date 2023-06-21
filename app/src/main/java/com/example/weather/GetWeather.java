@@ -8,15 +8,11 @@ import java.net.URL;
 import java.net.URLConnection;
 
 public class GetWeather {
-    private static final String BASE_URL = "https://api.openweathermap.org/data/2.5/weather?lat=";
+    private static final String BASE_URL = "http://87.246.197.119:8080/proxy?lon=";
     private static final String IMG_URL = "http://openweathermap.org/img/w/";
-    private final String apiKey;
     private double latitude;
     private double longitude;
 
-    public GetWeather(String apiKey) {
-        this.apiKey = apiKey;
-    }
 
     public void setCoords(double latitude, double longitude) {
         this.latitude = latitude;
@@ -26,7 +22,7 @@ public class GetWeather {
     public String getWeatherData() {
         URL url;
         try {
-            url = new URL(BASE_URL + latitude + "&lon=" + longitude + "&appid=" + apiKey + "&units=metric");
+            url = new URL(BASE_URL + longitude + "&lat=" + latitude);
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }

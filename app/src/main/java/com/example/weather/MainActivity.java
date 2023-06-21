@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -24,6 +25,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     private static boolean[] settingsStatus = ZERO;
     private LocationManager locationManager;
     protected LocationListener locationListener;
+    private Location location;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         Button settings = (Button) findViewById(R.id.SettingsButton);
         Button refresh = (Button) findViewById(R.id.RefreshButton);
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         refresh.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("SetTextI18n") // хз зач, говорит, что надо
             @Override
@@ -52,8 +54,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                         + "\nClouds = " + settingsStatus[1] + "\nVisibility = " + settingsStatus[2]
                         + "\nSunset/rise = " + settingsStatus[3] + "\nPressure = " + settingsStatus[4]
                         + "\nFeels like = " + settingsStatus[5]);
-                final String apiKey = "";
-                GetWeather getWeather = new GetWeather(apiKey);//TODO: Add Api Key
+                GetWeather getWeather = new GetWeather();
+                //location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                 getWeather.setCoords(location.getLatitude(), location.getLongitude());
                 Thread thread = new Thread(new Runnable() {
                     @Override
@@ -113,31 +115,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
     }
 
-
-    @Override
-    public void onLocationChanged(Location location) {
-        final String apiKey = "";
-        GetWeather getWeather = new GetWeather(apiKey);//TODO: Add Api Key
-        getWeather.setCoords(location.getLatitude(), location.getLongitude());
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    String json;
-                    json = getWeather.getWeatherData();
-                    JsonWeather weather = new JsonWeather();
-                    if (json != null) {
-                        weather = weather.fromJson(json);
-                        //txt.setText("Feels like = " +Double.toString(weather.main.feels_like) + "\n" + "visibility = " + Integer.toString(weather.visibility) + "m");
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        thread.start();
-    }
-
     @Override
     public void onProviderDisabled(String provider) {
         Log.d("Latitude", "disable");
@@ -146,6 +123,11 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     @Override
     public void onProviderEnabled(String provider) {
         Log.d("Latitude", "enable");
+    }
+
+    @Override
+    public void onLocationChanged(@NonNull Location location) {
+
     }
 
     @Override
