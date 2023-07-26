@@ -1,42 +1,30 @@
 package com.example.weather.main;
 
-import android.Manifest;
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
+import android.provider.Settings;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 import com.example.weather.R;
 import com.example.weather.main.logic.gps.GpsManager;
 
 public class MainActivity extends AppCompatActivity{
+    GpsManager gpsManager;
+    String id;
+    TextView textView;
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Button updateGps = (Button) findViewById(R.id.update_gps);
-        TextView text = (TextView) findViewById(R.id.textView);
-        GpsManager gps = new GpsManager(this);
-        gps.startLocationUpdates(this);
-        updateGps.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                text.setText("longitude = " + gps.getLongitude() + " lattitude = " + gps.getLatitude());
-            }
-        });
+        textView = (TextView) findViewById(R.id.textView);
+        gpsManager = new GpsManager(this);
+        id = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
+        textView.setText(id);
+        gpsManager.startLocationUpdates(this);
+    }
+    protected void onPause(Bundle savedInstanceState){
+        gpsManager.stopLocationUpdates();
     }
 }
 //TODO: 2) write settings to choose what i want to see
